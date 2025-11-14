@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Micrositio de Biología – Completo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial; margin:0; padding:0; background:#eef2f6; }
+header { background:#2b6cb0; color:white; padding:20px; text-align:center; }
+section { background:white; margin:20px; padding:20px; border-radius:10px; }
+h2 { color:#2b6cb0; }
+.quiz-question { margin-bottom:15px; }
+button { padding:10px 15px; border:none; background:#2b6cb0; color:white; border-radius:5px; cursor:pointer; }
+.grid { display:flex; flex-wrap:wrap; gap:10px; }
+.grid img { width:150px; cursor:pointer; border-radius:10px; }
+.memorama-container img { width:100px; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Micrositio de Biología</h1>
+<p>Aprende de forma interactiva</p>
+</header>
+
+<section>
+<h2>📌 ¿Qué es la célula?</h2>
+<p>La célula es la unidad básica de la vida. Todos los seres vivos están formados por células, ya sean organismos unicelulares o multicelulares.</p>
+
+<h3>Imagen:</h3>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Celltypes.png/640px-Celltypes.png" width="300">
+
+<h3>Video explicativo:</h3>
+<iframe width="300" height="200" src="https://www.youtube.com/embed/gfuRrGhhHAE"></iframe>
+</section>
+
+<section>
+<h2>🔬 Tipos de células</h2>
+<p>Existen dos tipos principales:</p>
+<ul>
+<li><b>Procariotas:</b> simples, sin núcleo definido.</li>
+<li><b>Eucariotas:</b> más complejas, con núcleo.</li>
+</ul>
+
+<iframe width="300" height="200" src="https://www.youtube.com/embed/J4XHhpR_SuA"></iframe>
+</section>
+
+<section>
+<h2>🧠 Mini Quiz</h2>
+
+<div class="quiz-question">
+<p>1. ¿Cuál es la unidad básica de la vida?</p>
+<select id="q1">
+<option value="">Selecciona…</option>
+<option value="mal">El átomo</option>
+<option value="bien">La célula</option>
+<option value="mal">El órgano</option>
+</select>
+</div>
+
+<div class="quiz-question">
+<p>2. Las células procariotas…</p>
+<select id="q2">
+<option value="">Selecciona…</option>
+<option value="bien">No tienen núcleo</option>
+<option value="mal">Tienen núcleo</option>
+</select>
+</div>
+
+<button onclick="calificar()">Calificar</button>
+<p id="resultado"></p>
+
+<script>
+function calificar(){
+ let puntos = 0;
+ if(document.getElementById("q1").value == "bien") puntos++;
+ if(document.getElementById("q2").value == "bien") puntos++;
+ document.getElementById("resultado").innerHTML = "Tu resultado: " + puntos + "/2";
+}
+</script>
+</section>
+
+<section>
+<h2>🧩 Memorama de Biología</h2>
+<p>Haz clic para descubrir y encontrar pares.</p>
+
+<div class="memorama-container" id="memorama"></div>
+
+<script>
+const imagenes = [
+ {id:1, src:"https://via.placeholder.com/100?text=Célula"},
+ {id:1, src:"https://via.placeholder.com/100?text=Célula"},
+ {id:2, src:"https://via.placeholder.com/100?text=Núcleo"},
+ {id:2, src:"https://via.placeholder.com/100?text=Núcleo"},
+ {id:3, src:"https://via.placeholder.com/100?text=ADN"},
+ {id:3, src:"https://via.placeholder.com/100?text=ADN"}
+];
+
+let seleccionadas = [];
+let bloqueadas = false;
+
+function cargarMemorama(){
+ let cont = document.getElementById("memorama");
+ let desordenadas = imagenes.sort(()=> Math.random()-0.5);
+
+ desordenadas.forEach((img,i)=>{
+   let elem = document.createElement("img");
+   elem.src = "https://via.placeholder.com/100?text=?";
+   elem.dataset.index = i;
+   elem.onclick = ()=> destapar(i, elem);
+   cont.appendChild(elem);
+ });
+}
+
+function destapar(index, elemento){
+ if(bloqueadas) return;
+ let real = imagenes[index].src;
+ elemento.src = real;
+ seleccionadas.push({index, elemento});
+
+ if(seleccionadas.length == 2){
+   bloqueadas = true;
+   setTimeout(()=>{
+     if(imagenes[seleccionadas[0].index].id ==
+        imagenes[seleccionadas[1].index].id){
+       // correcto
+     } else {
+       seleccionadas[0].elemento.src="https://via.placeholder.com/100?text=?";
+       seleccionadas[1].elemento.src="https://via.placeholder.com/100?text=?";
+     }
+     seleccionadas = [];
+     bloqueadas = false;
+   }, 800);
+ }
+}
+
+cargarMemorama();
+</script>
+
+</section>
+
+</body>
+</html>
